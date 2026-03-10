@@ -1,1 +1,20 @@
 "# Voting-System" 
+# Python
+__pycache__/
+*.pyc
+db.sqlite3
+.env
+
+# Virtual environment
+myvenv/
+venv/
+
+# Node
+node_modules/
+build/
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
