@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invalid Credential | Secure Voting System</title>
+    <style>
+        :root {
+            --accent-orange: #f59e0b;
+            --slate-800: #1e293b;
+            --slate-600: #475569;
+            --bg-gray: #f8fafc;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            background-color: var(--bg-gray);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: var(--slate-800);
+        }
+
+        .error-card {
+            background: white;
+            padding: 3rem 2rem;
+            border-radius: 24px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            max-width: 420px;
+            width: 90%;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        .icon-box {
+            width: 80px;
+            height: 80px;
+            background-color: #fffbeb;
+            color: var(--accent-orange);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 1.5rem;
+            border: 2px solid #fef3c7;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--slate-800);
+        }
+
+        .status-text {
+            color: var(--slate-600);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .guidance-list {
+            background-color: #f1f5f9;
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: left;
+            margin-bottom: 2rem;
+        }
+
+        .guidance-list h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: var(--slate-800);
+        }
+
+        .guidance-list ul {
+            margin: 0;
+            padding-left: 1.2rem;
+            font-size: 0.85rem;
+            color: var(--slate-600);
+        }
+
+        .guidance-list li {
+            margin-bottom: 8px;
+        }
+
+        .btn-retry {
+            display: block;
+            background-color: var(--slate-800);
+            color: white;
+            text-decoration: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .btn-retry:hover {
+            background-color: #0f172a;
+            transform: translateY(-1px);
+        }
+
+        .help-footer {
+            margin-top: 1.5rem;
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="error-card">
+        <div class="icon-box">🔍</div>
+        <h1>Unrecognized QR Code</h1>
+        
+        <p class="status-text">
+            The code you scanned is not registered in our voter database. Please ensure you are using the official credential provided to you.
+        </p>
+
+        <div class="guidance-list">
+            <h4>Troubleshooting Steps:</h4>
+            <ul>
+                <li>Ensure the QR code is clearly visible and not damaged.</li>
+                <li>Check that you are using the correct voting card for this election.</li>
+                <li>Avoid scanning barcodes from other documents.</li>
+            </ul>
+        </div>
+
+        <a href="{% url 'scan' %}" class="btn-retry">Try Scanning Again</a>
+
+        <div class="help-footer">
+            Technical Support ID: <strong>INVALID_REF_0x99</strong>
+        </div>
+    </div>
+
+</body>
+</html>

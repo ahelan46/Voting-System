@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Restricted | Secure Voting</title>
+    <style>
+        :root {
+            --danger-red: #e11d48;
+            --warning-amber: #d97706;
+            --text-dark: #0f172a;
+            --bg-slate: #f8fafc;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-slate);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+
+        .error-card {
+            background: white;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            border-top: 5px solid var(--danger-red);
+        }
+
+        .lock-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--danger-red);
+            letter-spacing: -0.025em;
+        }
+
+        .message-box {
+            background-color: #fff1f2;
+            border: 1px solid #ffe4e6;
+            padding: 1rem;
+            border-radius: 12px;
+            color: #9f1239;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 2rem;
+        }
+
+        .action-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background-color: var(--text-dark);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #334155;
+        }
+
+        .btn-outline {
+            border: 1px solid #e2e8f0;
+            color: #64748b;
+        }
+
+        .btn-outline:hover {
+            background-color: #f1f5f9;
+            color: var(--text-dark);
+        }
+
+        .support-text {
+            margin-top: 1.5rem;
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="error-card">
+        <span class="lock-icon">🚫</span>
+        <h2>Access Restricted</h2>
+        
+        <div class="message-box">
+            {{ message|default:"You do not have the necessary permissions to view this page or your session has expired." }}
+        </div>
+
+        <div class="action-links">
+            <a href="{% url 'home' %}" class="btn btn-primary">Return to Dashboard</a>
+            <a href="mailto:support@voting-system.com" class="btn btn-outline">Contact Support</a>
+        </div>
+
+        <p class="support-text">
+            Security ID: <span style="font-family: monospace;">ERR_AUTH_403</span>
+        </p>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invalid Entry | Secure Voting System</title>
+    <style>
+        :root {
+            --warning-red: #be123c;
+            --slate-800: #1e293b;
+            --slate-500: #64748b;
+            --bg-gray: #f1f5f9;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-gray);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: var(--slate-800);
+        }
+
+        .alert-card {
+            background: white;
+            padding: 3rem 2rem;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        .icon-container {
+            width: 72px;
+            height: 72px;
+            background-color: #fff1f2;
+            color: var(--warning-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1.5rem;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.025em;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background-color: #f87171;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        p {
+            line-height: 1.6;
+            color: var(--slate-500);
+            margin-bottom: 2rem;
+        }
+
+        .info-box {
+            background-color: #f8fafc;
+            border-radius: 12px;
+            padding: 1rem;
+            font-size: 0.85rem;
+            text-align: left;
+            border-left: 4px solid #cbd5e1;
+            margin-bottom: 2rem;
+        }
+
+        .btn-return {
+            display: block;
+            background-color: var(--slate-800);
+            color: white;
+            text-decoration: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .btn-return:hover {
+            background-color: #0f172a;
+        }
+
+        .timestamp {
+            margin-top: 1.5rem;
+            font-size: 0.7rem;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="alert-card">
+        <div class="icon-container">⚠️</div>
+        <div class="status-badge">Duplicate Entry Detected</div>
+        <h1>QR Code Already Used</h1>
+        
+        <p>Our records indicate that a vote has already been cast using this specific credential. To maintain system integrity, each QR code is valid for one session only.</p>
+
+        <div class="info-box">
+            <strong>Why am I seeing this?</strong><br>
+            • You have already successfully voted.<br>
+            • This QR code has been invalidated.<br>
+            • A technical error occurred during redirection.
+        </div>
+
+        <a href="{% url 'home' %}" class="btn-return">Return to Main Portal</a>
+
+        <div class="timestamp">
+            Reference ID: <span style="font-family: monospace;">ERR_DUP_VOTE_403</span>
+        </div>
+    </div>
+
+</body>
+</html>

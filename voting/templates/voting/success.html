@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote Confirmed | Secure Systems</title>
+    <style>
+        :root {
+            --success-green: #22c55e;
+            --primary-blue: #2563eb;
+            --text-dark: #1e293b;
+            --bg-light: #f8fafc;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-light);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+
+        .success-card {
+            background: white;
+            padding: 3rem 2rem;
+            border-radius: 24px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .check-icon {
+            width: 80px;
+            height: 80px;
+            background: #f0fdf4;
+            color: var(--success-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 1.5rem;
+            border: 4px solid #dcfce7;
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .receipt-box {
+            background: #f1f5f9;
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px dashed #cbd5e1;
+            margin-bottom: 2rem;
+        }
+
+        .receipt-label {
+            display: block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #94a3b8;
+            margin-bottom: 5px;
+        }
+
+        .receipt-id {
+            font-family: 'Courier New', monospace;
+            font-weight: 700;
+            font-size: 0.9rem;
+            word-break: break-all;
+            color: #475569;
+        }
+
+        .btn-home {
+            display: inline-block;
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-home:hover {
+            background-color: #1d4ed8;
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .print-link {
+            display: block;
+            margin-top: 1.5rem;
+            color: #94a3b8;
+            font-size: 0.85rem;
+            text-decoration: none;
+        }
+
+        .print-link:hover {
+            color: var(--primary-blue);
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="success-card">
+        <div class="check-icon">✓</div>
+        <h2>Vote Submitted!</h2>
+        <p>Your choice has been recorded securely and anonymously. Thank you for participating in the democratic process.</p>
+
+        <div class="receipt-box">
+            <span class="receipt-label">Transaction Receipt ID</span>
+            <span class="receipt-id">TX-{{ transaction_id|default:"B7X9-R2P4-K0L1-Q88W" }}</span>
+        </div>
+
+        <a href="{% url 'home' %}" class="btn-home">Return to Home</a>
+
+        <a href="javascript:window.print()" class="print-link">🖨️ Print Receipt</a>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Official Ballot | Digital Voting System</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --bg: #f1f5f9;
+            --text-dark: #0f172a;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .ballot-container {
+            max-width: 600px;
+            width: 100%;
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .header {
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .header h2 {
+            margin: 0;
+            font-size: 1.75rem;
+            color: var(--primary);
+        }
+
+        .header p {
+            color: #64748b;
+            margin-top: 8px;
+        }
+
+        .party-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 2rem;
+        }
+
+        /* Hide default radio buttons */
+        .party-option input[type="radio"] {
+            display: none;
+        }
+
+        /* Style the label as a card */
+        .party-card {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .party-card:hover {
+            border-color: #cbd5e1;
+            background-color: #f8fafc;
+        }
+
+        /* Selection styles */
+        .party-option input[type="radio"]:checked + .party-card {
+            border-color: var(--primary);
+            background-color: #eff6ff;
+            box-shadow: 0 0 0 1px var(--primary);
+        }
+
+        .party-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            flex-grow: 1;
+        }
+
+        /* Custom Checkmark Circle */
+        .checkmark {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #cbd5e1;
+            border-radius: 50%;
+            display: inline-block;
+            margin-left: 15px;
+            position: relative;
+        }
+
+        .party-option input[type="radio"]:checked + .party-card .checkmark {
+            border-color: var(--primary);
+            background-color: var(--primary);
+        }
+
+        .party-option input[type="radio"]:checked + .party-card .checkmark::after {
+            content: "✓";
+            color: white;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background-color: var(--primary);
+            color: white;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.3s;
+            box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.3);
+        }
+
+        .submit-btn:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ballot-container">
+        <div class="header">
+            <h2>Official Ballot</h2>
+            <p>Welcome, <strong>{{ voter.name }}</strong>. Please select your preferred candidate/party below.</p>
+        </div>
+
+        <form method="post" action="/submit/">
+            {% csrf_token %}
+            <div class="party-list">
+                {% for party in parties %}
+                <label class="party-option">
+                    <input type="radio" name="party" value="{{ party.id }}" required>
+                    <div class="party-card">
+                        <span class="party-name">{{ party.party_name }}</span>
+                        <span class="checkmark"></span>
+                    </div>
+                </label>
+                {% endfor %}
+            </div>
+
+            <button type="submit" class="submit-btn" onclick="return confirmVote()">Cast My Vote</button>
+        </form>
+
+        <p style="text-align: center; color: #94a3b8; font-size: 0.8rem; margin-top: 1.5rem;">
+            Once submitted, your choice cannot be changed.
+        </p>
+    </div>
+
+    <script>
+        function confirmVote() {
+            const selected = document.querySelector('input[name="party"]:checked');
+            if (!selected) return true; // Browser validation will catch this
+
+            const partyName = selected.closest('.party-option').querySelector('.party-name').innerText;
+            return confirm(`Are you sure you want to cast your vote for: ${partyName}?`);
+        }
+    </script>
+
+</body>
+</html>

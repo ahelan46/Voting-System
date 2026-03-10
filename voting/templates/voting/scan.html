@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan Voter QR Code</title>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --info: #0ea5e9;
+            --bg: #f8fafc;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: #1e293b;
+        }
+
+        .scanner-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        /* Styling the QR Reader Container */
+        #reader {
+            width: 100% !important;
+            border: none !important;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #000;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        /* Adjusting the internal UI of the library */
+        #reader__dashboard_section_csr button {
+            background-color: var(--primary) !important;
+            border-radius: 6px !important;
+            text-transform: uppercase;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 8px 16px !important;
+        }
+
+        #result {
+            margin: 1.5rem 0;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Message Boxes */
+        .message {
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            width: 100%;
+            animation: fadeIn 0.3s ease;
+        }
+        .error { background-color: #fef2f2; color: var(--danger); border: 1px solid #fee2e2; }
+        .success { background-color: #f0fdf4; color: var(--success); border: 1px solid #dcfce7; }
+        .info { background-color: #f0f9ff; color: var(--info); border: 1px solid #e0f2fe; }
+
+        .btn-stop {
+            background-color: #64748b;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-stop:hover {
+            background-color: #475569;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Custom Scanner Overlay (Simulated via CSS) */
+        #reader video {
+            object-fit: cover !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="scanner-card">
+        <h2>📷 Verify Identity</h2>
+        <p style="color: #64748b; margin-bottom: 20px;">Position the QR code within the frame to authenticate.</p>
+        
+        <div id="reader"></div>
+        
+        <div id="result">
+            <div class="message info">Waiting for camera...</div>
+        </div>
+
+        <button class="btn-stop" onclick="stopScanning()">Stop Scanner</button>
+        <p style="margin-top: 20px; font-size: 0.8rem; color: #94a3b8;">
+            Powered by SecureVote Protocol
+        </p>
+    </div>
+
+    <script src="https://unpkg.com/html5-qrcode@1.0.46/minified/html5-qrcode.min.js"></script>
+    <script>
+        let html5QrcodeScanner;
+        
+        function onScanSuccess(decodedText) {
+            console.log("QR Code scanned:", decodedText);
+            showMessage("✅ Authenticated! Redirecting...", "success");
+
+            if (html5QrcodeScanner) {
+                html5QrcodeScanner.stop().then(() => {
+                    console.log("Scanner stopped.");
+                }).catch(err => console.error(err));
+            }
+            
+            setTimeout(() => {
+                window.location.href = decodedText;
+            }, 1200);
+        }
+
+        function onScanFailure(error) {
+            // Logic remains the same, silent failure for UX
+        }
+
+        function showMessage(message, type) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `<div class="message ${type}">${message}</div>`;
+        }
+
+        function stopScanning() {
+            if (html5QrcodeScanner) {
+                html5QrcodeScanner.stop().then(() => {
+                    showMessage("Scanner paused", "info");
+                }).catch(err => console.warn("Stop error:", err));
+            }
+        }
+
+        function startScanner() {
+            try {
+                html5QrcodeScanner = new Html5Qrcode("reader");
+                
+                Html5Qrcode.getCameras().then(devices => {
+                    if (devices && devices.length) {
+                        let cameraId = devices[0].id;
+                        for (let device of devices) {
+                            if (device.label.toLowerCase().includes('back')) {
+                                cameraId = device.id;
+                                break;
+                            }
+                        }
+                        
+                        html5QrcodeScanner.start(
+                            cameraId,
+                            {
+                                fps: 15, // Slightly higher for smoother UI
+                                qrbox: { width: 250, height: 250 },
+                            },
+                            onScanSuccess,
+                            onScanFailure
+                        ).catch(err => {
+                            showMessage(`Camera error: ${err}`, "error");
+                        });
+                    } else {
+                        showMessage("No camera found", "error");
+                    }
+                }).catch(err => {
+                    showMessage("Camera access denied", "error");
+                });
+            } catch (err) {
+                showMessage("Initialization error", "error");
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', startScanner);
+
+        window.addEventListener('beforeunload', () => {
+            if (html5QrcodeScanner) {
+                html5QrcodeScanner.clear();
+            }
+        });
+    </script>
+</body>
+</html>

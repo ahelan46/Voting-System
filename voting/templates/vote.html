@@ -1,0 +1,7 @@
+<form method="post" action="/submit/">
+  {% csrf_token %}
+  {% for party in parties %}
+    <input type="radio" name="party" value="{{ party.id }}"> {{ party.party_name }}<br>
+  {% endfor %}
+  <button type="submit">Vote</button>
+</form>
